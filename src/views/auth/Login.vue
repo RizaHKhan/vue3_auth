@@ -20,22 +20,21 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
 import firebase from "firebase";
 
 export default defineComponent({
   setup() {
     const email = ref<string>("");
     const password = ref<string>("");
+    const router = useRouter();
 
     async function login() {
-      try {
-        const user = await firebase
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        console.log(user);
-      } catch (e) {
-        console.log(e);
-      }
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email.value, password.value)
+        .then(() => router.push("/"))
+        .catch((e) => console.log(e));
     }
 
     return { email, password, login };
